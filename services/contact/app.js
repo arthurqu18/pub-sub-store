@@ -7,13 +7,13 @@ const fs = require('fs')
 require('dotenv').config({ path: path.resolve(__dirname, '.env') })
 
 async function processMessage(msg) {
-    const mailData = JSON.parse(msg.content)
+    const mailData = JSON.parse(msg.content) // recebe nome, email vindo do processamento da msg de order
     try {
         const mailOptions = {
             'from': process.env.MAIL_USER,
             'to': `${mailData.clientFullName} <${mailData.to}>`,
-            'cc': mailData.cc || null,
-            'bcc': mailData.cco || null,
+            'cc': mailData.cc || null, // n tem
+            'bcc': mailData.cco || null, // n tem
             'subject': mailData.subject,
             'text': mailData.text,
             'attachments': null

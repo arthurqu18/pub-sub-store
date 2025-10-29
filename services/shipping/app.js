@@ -4,7 +4,7 @@ const path = require('path')
 require('dotenv').config({ path: path.resolve(__dirname, '.env') })
 
 async function processMessage(msg) {
-    const deliveryData = JSON.parse(msg.content)
+    const deliveryData = JSON.parse(msg.content) // recebe orderData passado pelo processamento de msg de order
     try {
         if(deliveryData.address && deliveryData.address.zipCode) {
             console.log(`✔ SUCCESS, SHIPPING AUTHORIZED, SEND TO:`)

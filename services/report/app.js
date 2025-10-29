@@ -4,6 +4,20 @@ const path = require('path')
 require('dotenv').config({ path: path.resolve(__dirname, '.env') })
 
 var report = {}
+
+async function processMessage(msg) {
+    const reportData = JSON.parse(msg.content)
+    try {
+        if(reportData.products){
+            updateReport(reportData.products)
+            printReport()
+            console.log(`✔ SUCCESS, PRODUCTS REPORTED`)
+        }
+    } catch (error) {
+        console.log(`X ERROR TO PROCESS: ${error.response}`)
+    }
+}
+
 async function updateReport(products) {
     for(let product of products) {
         if(!product.name) {
@@ -24,7 +38,8 @@ async function printReport() {
 }
 
 async function consume() {
-    //TODO: Constuir a comunicação com a fila 
+    console.log(`SUCCESSFULLY SUBSCRIBED TO QUEUE: ${process.env.RABBITMQ_QUEUE_NAME}`)
+    await (await RabbitMQService.getInstance()).consume(process.env.RABBITMQ_QUEUE_NAME, (msg) => {processMessage(msg)})
 } 
 
 consume()
